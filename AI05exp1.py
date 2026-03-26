@@ -1,0 +1,48 @@
+jug1_capacity = int(input("Enter capacity of Jug 1:"))
+jug2_capacity = int(input("Enter capacity of Jug 2:"))
+target = int(input("Enter target amount of water:"))
+
+visited = set()
+path=[]
+
+def dfs(a,b):
+        #Goal condition
+        if a == target or b ==target:
+                path.append((a,b))
+                return True
+            
+        if (a,b) in visited:
+                return False
+            
+        visited.add ((a,b))
+        path.append ((a,b))
+        next_states =[]
+            
+        next_states.append((jug1_capacity,b))
+            
+        next_states.append((a,jug2_capacity))
+            
+        next_states.append((0,b))
+            
+        next_states.append((a,0))
+            
+        pour = min(a,jug2_capacity-b)
+        next_states.append((a-pour,b+pour))
+            
+        pour = min(b,jug1_capacity-a)
+        next_states.append((a+pour,b-pour))
+        
+        for state in next_states:
+            if state not in visited:
+                if dfs(state[0],state[1]):
+                    return True
+                
+        path.pop()
+        return False
+    
+dfs(0,0)
+print("Solution Path:")
+for step in path:
+      print(step)
+            
+            
